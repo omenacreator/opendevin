@@ -28,4 +28,4 @@ RUN poetry install --no-interaction --no-ansi
 EXPOSE 3000
 
 # Start the agent
-CMD ["poetry", "run", "python", "-m", "openhands"]
+CMD CMD ["poetry", "run", "uvicorn", "openhands.app.main:app", "--host", "0.0.0.0", "--port", "3000"]
