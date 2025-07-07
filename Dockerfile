@@ -16,16 +16,18 @@ WORKDIR /app
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:$PATH"
 
-# Copy source
+# Copy source code into the container
 COPY . .
 
-# Use project’s correct Python version
-RUN poetry env use python3.12
+# (Optional) You can remove this line if it causes issues:
+# RUN poetry env use python3.12
 
 # Install dependencies
-RUN poetry install --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-interaction --no-ansi
 
+# Expose port
 EXPOSE 3000
 
-# Start the agent
-CMD CMD ["poetry", "run", "uvicorn", "openhands.app.main:app", "--host", "0.0.0.0", "--port", "3000"]
+# ✅ Corrected start command (no double CMD)
+CMD ["poetry", "run", "uvicorn", "openhands.app.main:app", "--host", "0.0.0.0", "--port", "3000"]
